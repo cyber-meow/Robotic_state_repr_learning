@@ -1,2 +1,2 @@
-# Robotic_state_repr_learning
+# Robotic_state_representation_learning
 State representation learning in robotics
