@@ -1,7 +1,8 @@
 
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
-from Interfaces import Environment, Bot
+
+from interfaces.interfaces import Environment, Bot
 
 
 class Interaction(object):
@@ -21,6 +22,10 @@ class Interaction(object):
         self.observation, self.reward = self.env.act(action)
         self.bot.learnFromExp(exp)
     
+    def interact_serie(self, iter_num):
+        for _ in range(iter_num):
+            self.interact()
+
     def observationSerie(self):
         fig, ax = plt.subplots()
         obs = self.env.showObs(self.observation)
