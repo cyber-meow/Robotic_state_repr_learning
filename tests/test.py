@@ -21,9 +21,9 @@ def srl_loss(W):
 # gradient(srl_loss, srl.W.reshape(6), 1e-6)
 
 
-navEnv = NavEnv()
+nav_env = NavEnv()
 bot = ExploreBot()
-inter = Interaction(navEnv, bot)
+inter = Interaction(nav_env, bot)
 inter.interact_serie(5000)
 
 bot_srl = StateReprLearn(300, 2, bot.data)

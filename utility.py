@@ -3,7 +3,7 @@
 Utility functions
 """
 
-def setAllArgs(obj, argdict):
+def set_all_args(obj, argdict):
     for k in argdict.keys():
         if hasattr(obj, k):
             setattr(obj, k, argdict[k])

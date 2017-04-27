@@ -12,27 +12,46 @@ class Interaction(object):
         assert isinstance(bot, Bot)
         self.env = env
         self.bot = bot
-        self.bot.actions = env.actions
-        self.observation = env.observation()
-        self.reward = 0
+
+    @property
+    def bot(self):
+        return self._bot
+
+    @bot.setter
+    def bot(self, bot):
+        self._bot = bot
+        self._bot.actions = self.env.actions
+        self._reward = 0
+
+    @property
+    def env(self):
+        return self._env
+
+    @env.setter
+    def env(self, env):
+        self._env = env
+        self._observation = env.observation()
+        self._env_state_his = []
+
 
     def interact(self):
-        action = self.bot.decision(self.observation)
-        exp = self.observation, action, self.reward
-        self.observation, self.reward = self.env.act(action)
-        self.bot.learnFromExp(exp)
+        self._env_state_his.append(env.state)
+        action = self.bot.decision(self._observation)
+        exp = self._observation, action, self._reward
+        self.bot.learn_from_experience(exp)
+        self._observation, self._reward = self.env.act(action)
     
     def interact_serie(self, iter_num):
         for _ in range(iter_num):
             self.interact()
 
-    def observationSerie(self):
+    def observation_serie(self):
         fig, ax = plt.subplots()
-        obs = self.env.showObs(self.observation)
+        obs = self.env.show_observation(self._observation)
         im = plt.imshow(obs, interpolation='none', origin='lower')
         def animate(*args):
             self.interact()
-            im.set_array(self.env.showObs(self.observation))
+            im.set_array(self.env.show_observation(self._observation))
             return im,
         ani = animation.FuncAnimation(fig, animate, interval=50, blit=True)
         plt.show()

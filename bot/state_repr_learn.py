@@ -2,7 +2,7 @@
 import numpy as np
 from sklearn.preprocessing import normalize
 
-from utility import setAllArgs
+from utility import set_all_args
 
 
 def gradient(f, x, delta):
@@ -48,7 +48,7 @@ class StateReprLearn(object):
         self._st_dim = st_dim
         self.data = data
         self.W = np.random.random((st_dim, obser_dim))
-        setAllArgs(self, kwargs)
+        set_all_args(self, kwargs)
 
     @property
     def obser_dim(self):
