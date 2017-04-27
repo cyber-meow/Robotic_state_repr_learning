@@ -188,22 +188,23 @@ class StateReprLearn(object):
         rep_loss = (self._st_expdiff1 * self._st_delta_diff_norm**2).mean()
         return temp_loss + prop_loss + cau_loss +rep_loss
 
+    # note that it's the transpose
     def gradient(self):
         temp_grad = (
-            2 * array_outer(self._st_delta, self._obs_delta)).mean(axis=0)
+            2 * array_outer(self._obs_delta, self._st_delta)).mean(axis=0)
         prop_grad = (
             2 * (self._st2_delta_norm - self._st1_delta_norm)[:,None,None]
-            * (array_outer(self._st2_delta_nor, self._obs2_delta)
-            - array_outer(self._st1_delta_nor, self._obs1_delta))).mean(axis=0)
+            * (array_outer(self._obs2_delta, self._st2_delta_nor)
+            - array_outer(self._obs1_delta, self._st1_delta_nor))).mean(axis=0)
         cau_grad = (
             - self._st_expdiff2[:,None,None]
-            * array_outer(self._st_diff_nor2, self._obs_diff2)).mean(axis=0)
+            * array_outer(self._obs_diff2, self._st_diff_nor2)).mean(axis=0)
         rep_grad = (
             - self._st_expdiff1[:,None,None]
-            * array_outer(self._st_diff_nor1, self._obs_diff1)
+            * array_outer(self._obs_diff1, self._st_diff_nor1)
             * (self._st_delta_diff_norm**2)[:,None,None]
             + self._st_expdiff1[:,None,None]
-            * 2 * array_outer(self._st_delta_diff, self._obs_delta_diff)
+            * 2 * array_outer(self._obs_delta_diff, self._st_delta_diff)
            ).mean(axis=0)
         return temp_grad + prop_grad + cau_grad + rep_grad
         

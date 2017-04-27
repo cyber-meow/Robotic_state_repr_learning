@@ -1,7 +1,7 @@
 
 import numpy as np
 
-from interfaces.interfaces import Bot
+from inter.interfaces import Bot
 from utility import set_all_args
 
 

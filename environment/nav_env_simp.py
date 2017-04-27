@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
-from interfaces.interfaces import Environment
+from inter.interfaces import Environment
 
 
 # A robot is placed in a room of size 45 * 45 units
@@ -45,8 +45,8 @@ class NavEnv(Environment):
     def observation(self):
         img = np.ones((10,10,3), dtype=float)
         x,y = self.pos
-        xl, xr = (x-2)//4.5, (x+2-1e-3)//4.5
-        yl, yr = (y-2)//4.5, (y+2-1e-3)//4.5
+        xl, xr = int((x-2)/4.5), int((x+2-1e-3)//4.5)
+        yl, yr = int((y-2)//4.5), int((y+2-1e-3)//4.5)
         if xl == xr:
             occupiedxs = np.array([xl])
             intensityxs = np.ones(1)
@@ -67,9 +67,9 @@ class NavEnv(Environment):
         
     def show_observation(self, observation=None):
         if observation is None:
-            return self.observation.reshape(10,10,3)
+            return self.observation().reshape(10,10,3)
         else:
-            return observation.reshape(10,10,3)
+            return observation().reshape(10,10,3)
 
     # needs to be modified later
     def show_img(self):
