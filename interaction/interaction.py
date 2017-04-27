@@ -33,9 +33,12 @@ class Interaction(object):
         self._observation = env.observation()
         self._env_state_his = []
 
+    @property
+    def env_state_his(self):
+        return self._env_state_his
 
     def interact(self):
-        self._env_state_his.append(env.state)
+        self._env_state_his.append(self.env.state)
         action = self.bot.decision(self._observation)
         exp = self._observation, action, self._reward
         self.bot.learn_from_experience(exp)

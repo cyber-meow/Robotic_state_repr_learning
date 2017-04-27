@@ -25,6 +25,7 @@ class Environment(metaclass=ABCMeta):
         Its real meaning may vary from case to case, what's important is 
         that it can be used to compare with the state representation
         learned by the robot.
+        Attention: this value shouldn't be modified later (list, array ..)
         """
         pass
 

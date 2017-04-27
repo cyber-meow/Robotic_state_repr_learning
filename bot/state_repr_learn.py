@@ -47,7 +47,8 @@ class StateReprLearn(object):
         self._obser_dim = obser_dim
         self._st_dim = st_dim
         self.data = data
-        self.W = np.random.random((st_dim, obser_dim))
+        # this is in fact the transpose of W
+        self.W = np.random.random((obser_dim, st_dim))
         set_all_args(self, kwargs)
 
     @property
@@ -79,6 +80,10 @@ class StateReprLearn(object):
     def W(self, W):
         self._W = W
         self.pre_compute_states()
+
+    @property
+    def states(self):
+        return self._states
 
 
     def pre_compute_obs(self):
@@ -137,7 +142,7 @@ class StateReprLearn(object):
 
     def pre_compute_states(self):
         # in general
-        self._states = np.dot(self._obs, self.W.transpose())
+        self._states = np.dot(self._obs, self.W)
         self._st_delta = self._states[1:] - self._states[:-1]
         self._st_delta_norm = np.linalg.norm(self._st_delta, axis=1)
         # a_t1 = a_t2, with eventually r_t1 != r_t2
