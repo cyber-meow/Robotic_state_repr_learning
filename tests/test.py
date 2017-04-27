@@ -5,7 +5,7 @@ sys.path.insert(0, os.path.abspath('..'))
 import numpy as np
 
 from interaction.interaction import Interaction
-from env.nav_env_simp import NavEnv
+from environment.nav_env_simp import NavEnv
 from bot.explore_bot import ExploreBot
 from bot.state_repr_learn import StateReprLearn, gradient
 

@@ -7,7 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from interaction.interaction import Interaction
-from env.nav_env_simp import NavEnv
+from environment.nav_env_simp import NavEnv
 from bot.explore_bot import ExploreBot
 from bot.state_repr_learn import StateReprLearn, gradient
 
