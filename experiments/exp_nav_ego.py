@@ -6,13 +6,14 @@ sys.path.insert(0, os.path.abspath('..'))
 import numpy as np
 
 from inter.interaction import Interaction
-from environment.nav_env import NavEnv
+from environment.nav_env_ego import NavEnvEgo
 from bot.explore_bot import ExploreBot
 from bot.state_repr_learn import StateReprLearn, gradient
 from plot_exp_nav import plot_states
 
 
-nav_env = NavEnv()
+nav_env = NavEnvEgo()
+nav_env.pos = np.array([22.5, 22.5])
 bot = ExploreBot()
 inter = Interaction(nav_env, bot)
 # inter.interact_serie(5000)
