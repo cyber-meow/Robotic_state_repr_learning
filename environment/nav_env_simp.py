@@ -43,7 +43,8 @@ class NavEnv(Environment):
 
     # an image of the entire room, 10 * 10 pixel RGB image
     def observation(self):
-        img = np.ones((10,10,3), dtype=float)
+        color = np.array([0, 0.8, 0.8])
+        img = np.tile(color, (10,10,1))
         x,y = self.pos
         xl, xr = int((x-2)/4.5), int((x+2-1e-3)//4.5)
         yl, yr = int((y-2)//4.5), int((y+2-1e-3)//4.5)
@@ -62,14 +63,14 @@ class NavEnv(Environment):
         cases = np.dstack(np.meshgrid(occupiedxs, occupiedys)).reshape(-1,2)
         intensities = np.outer(intensityxs, intensityys).reshape(-1)
         for i in range(len(cases)):
-            img[cases[i][0],cases[i][1]] = (1 - intensities[i]) * np.ones(3)
+            img[cases[i][0],cases[i][1]] = (1 - intensities[i]) * color
         return img.reshape(-1)
         
     def show_observation(self, observation=None):
         if observation is None:
             return self.observation().reshape(10,10,3)
         else:
-            return observation().reshape(10,10,3)
+            return observation.reshape(10,10,3)
 
     # needs to be modified later
     def show_img(self):
