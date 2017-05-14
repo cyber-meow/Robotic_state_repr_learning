@@ -11,6 +11,9 @@ from inter.interfaces import Environment
 
 class NavEnv(Environment):
 
+    ground_color = np.array([0, 0.8, 0.8])  #aqua
+    bot_color = np.array([0, 0, 0])  # black
+
     def __init__(self):
         # x,y coordinates of the robot's center
         self.pos = 2 * np.ones(2)
@@ -43,7 +46,6 @@ class NavEnv(Environment):
 
     # an image of the entire room, 10 * 10 pixel RGB image
     def observation(self):
-        color = np.array([0, 0.8, 0.8])  # aqua
         img = np.tile(color, (10,10,1))
         x,y = self.pos
         xl, xr = int((x-2)/4.5), int((x+2-1e-3)//4.5)
@@ -63,7 +65,9 @@ class NavEnv(Environment):
         cases = np.dstack(np.meshgrid(occupiedys, occupiedxs)).reshape(-1,2)
         intensities = np.outer(intensityxs, intensityys).reshape(-1)
         for i in range(len(cases)):
-            img[cases[i][0],cases[i][1]] = (1 - intensities[i]) * color
+            img[cases[i][0],cases[i][1]] = (
+                (1 - intensities[i]) * self.ground_color 
+                + intensities[i] * self.bot_color)
         return img.reshape(-1)
         
     def show_observation(self, observation=None):
