@@ -7,10 +7,11 @@ from environment.nav_env import NavEnv
 
 class NavEnvEgo(NavEnv):
 
-    front_color = np.array([0, 0, 0.5])  # dark blue
-    left_color = np.array([0.4, 0.7, 1])  # light blue
-    right_color = np.array([0, 0.7, 0])  # green
-    back_color = np.array([0.2, 1, 0.6])  # palegreen
+    wall_colors = dict()
+    wall_colors["front"] = np.array([0, 0, 0.5])  # dark blue
+    wall_colors["left"] = np.array([0.4, 0.7, 1])  # light blue
+    wall_colors["right"] = np.array([0, 0.7, 0])  # green
+    wall_colors["back"] = np.array([0.2, 1, 0.6])  # palegreen
     top_color = np.array([0, 0, 0])  # black
     ground_color = np.array([0, 0.8, 0.8])  # aqua
 
@@ -19,13 +20,13 @@ class NavEnvEgo(NavEnv):
 
         x, y = self.pos + np.array([0, 2])
         if y == 45:
-            return np.tile(self.front_color, (10, 10, 1))
+            return np.tile(self.wall_colors["front"], (10, 10, 1))
 
         a1 = np.arctan(x/(45-y))  # angle in front, left
         a2 = np.arctan((45-x)/(45-y))  # angle in front, right
-        b1 = np.arctan((45-y)/x)
+        b1 = np.pi/2 - a1
         b = np.arctan(y/x) + b1  # angle left
-        c1 = np.arctan((45-y)/(45-x))
+        c1 = np.pi/2 - a2
         c = np.arctan(y/(45-x)) + c1  # angle right
 
         img = np.empty((10, 10, 3))
@@ -37,7 +38,7 @@ class NavEnvEgo(NavEnv):
             end = start + np.pi / 6
             wall_dis = self._wall_dis(x, y, center, a1, b1, b)
             middle_color = self._middle_color(
-                x, y, start, end, a1, b, self.left_color)
+                x, y, start, end, a1, b, self.wall_colors["left"])
             self._set_column_color(img, wall_dis, 4-i, middle_color)
             
         # right side of the vision field
@@ -47,10 +48,10 @@ class NavEnvEgo(NavEnv):
             end = start + np.pi / 6
             wall_dis = self._wall_dis(45-x, y, center, a2, c1, c)
             middle_color = self._middle_color(
-                x, y, start, end, a2, c, self.right_color)
+                x, y, start, end, a2, c, self.wall_colors["right"])
             self._set_column_color(img, wall_dis, 5+i, middle_color)
 
-        return img
+        return img.reshape(-1)
                     
 
     @staticmethod
@@ -66,20 +67,20 @@ class NavEnvEgo(NavEnv):
     @classmethod
     def _middle_color(cls, x, y, start, end, a1, b, color):
         if end <= a1:
-            middle_color = cls.front_color
+            middle_color = cls.wall_colors["front"]
         # must have end < a1+b
         elif start < a1 < end:
             middle_color = cls._mix_color(
-                start, a1, end, cls.front_color, color)
+                start, a1, end, cls.wall_colors["front"], color)
         elif a1 <= start and end <= a1+b:
             middle_color = color
         # must have a1 < start
         elif start < a1+b < end:
             middle_color = cls._mix_color(
-                start, a1+b, end, color, cls.back_color)
+                start, a1+b, end, color, cls.wall_colors["back"])
         # a1+b <= start
         else:
-            middle_color = cls.back_color
+            middle_color = cls.wall_colors["back"]
         return middle_color
 
 
