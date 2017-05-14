@@ -146,7 +146,7 @@ class NavEnvExt(NavEnvEgo):
 
     def _pos_precompute(self):
 
-        theta = self.orientation
+        theta = self.rad_orientation
         # the position of the "eye"
         self._eyep = self.pos + 2 * np.array([np.sin(theta), np.cos(theta)])
         x,y = self._eyep
@@ -156,27 +156,37 @@ class NavEnvExt(NavEnvEgo):
         self._b = -np.pi/2 + np.arctan((-y)/x)
         self._c = np.pi/2 + np.arctan(y/(45-x))
 
-
+    
     def observation(self):
+        img_large = self.egocentric_view(100)
+        img = np.empty((10,10,3))
+        for i in range(10):
+            for j in range(10):
+                img[i, j] = np.mean(
+                    img_large[i*10:i*10+10, j*10:j*10+10], axis=(0,1))
+        return img.reshape(-1)
 
-        img_large = np.empty((100,100,3))
+
+    def egocentric_view(self, resolution):
+
+        img_large = np.empty((resolution, resolution, 3))
 
         left_most = self.rad_orientation - np.pi*5/6
         right_most = self.rad_orientation + np.pi*5/6
-        angles = np.linspace(left_most, right_most, 100)
+        angles = np.linspace(left_most, right_most, resolution)
         angles[angles < -np.pi] += 2*np.pi
         angles[angles >= np.pi] -= 2*np.pi
         
         for i, angle in enumerate(angles):
-            img_large[:,i] = self._column_color(angle)
+            img_large[:,i] = self._column_color(angle, resolution)
         return img_large
     
 
     # angle in the case when self.orientation = 0
-    def _column_color(self, angle):
+    def _column_color(self, angle, resolution):
 
-        col_img = np.empty((100,3))
-        degrees = np.linspace(-7*np.pi/18, np.pi/6, 100)
+        col_img = np.empty((resolution, 3))
+        degrees = np.linspace(-7*np.pi/18, np.pi/6, resolution)
         wall_dis, wall_cord, wall_name = self._wall_information(angle)
         if wall_dis == 0:
             alpha = np.pi/2
@@ -258,9 +268,9 @@ class NavEnvExt(NavEnvEgo):
                     angle -= np.pi
             
             angle_diff = min(
-                abs(angle-self.orientation), 
-                abs(angle+2*np.pi-self.orientation),
-                abs(angle-2*np.pi-self.orientation)
+                abs(angle-self.rad_orientation), 
+                abs(angle+2*np.pi-self.rad_orientation),
+                abs(angle-2*np.pi-self.rad_orientation)
             )
             
             if angle_diff <= np.pi/18:
@@ -274,12 +284,6 @@ class NavEnvExt(NavEnvEgo):
         
         return self.ground_color
 
-
-    def show_observation(self, observation=None):
-        if observation is None:
-            return self.observation().reshape(100, 100, 3)
-        else:
-            return observation.reshape(100, 100, 3)
 
     def top_down_view(self, resolution):
         side = np.linspace(0, 45, resolution)
