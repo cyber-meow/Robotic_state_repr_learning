@@ -20,7 +20,7 @@ class NavEnvEgo(NavEnv):
 
         x, y = self.pos + np.array([0, 2])
         if y == 45:
-            return np.tile(self.wall_colors["front"], (10, 10, 1))
+            return np.tile(self.wall_colors["front"], (10, 10, 1)).reshape(-1)
 
         a1 = np.arctan(x/(45-y))  # angle in front, left
         a2 = np.arctan((45-x)/(45-y))  # angle in front, right

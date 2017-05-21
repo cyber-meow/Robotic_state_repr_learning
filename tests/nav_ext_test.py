@@ -16,6 +16,7 @@ bot = ExploreBot()
 inter = Interaction(nav_env, bot)
 
 fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(15, 5))
+ax1.axis('off'); ax2.axis('off'); ax3.axis('off')
 
 obs1 = nav_env.top_down_view(128)
 obs2 = nav_env.egocentric_view(128)
@@ -34,6 +35,6 @@ def animate(*args):
 
 def run():
     ani = animation.FuncAnimation(fig, animate, 1000, interval=100, blit=True)
-    #ani.save("nav_env_ext.mp4", writer='ffmpeg')
+    ani.save("nav_env_ext.mp4", writer='ffmpeg')
     plt.show()
     return ani
