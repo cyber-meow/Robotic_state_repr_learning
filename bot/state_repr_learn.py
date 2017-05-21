@@ -64,6 +64,7 @@ class StateReprLearn(object):
     def data(self):
         return self._data
 
+    # note that when we update data we must also call pre_compute_states
     @data.setter
     def data(self, data):
         self._data = data
