@@ -40,7 +40,8 @@ class StateReprLearn(object):
     # internal parameters
     epsilon = 0.1
     error = 1e-4
-    k = 100
+    k = 100  # loss function for only samples at most k steps apart
+    p = 0.1  # the probability that epsilon gets larger for each tour
 
     # experimental data is a triple of arrays (o_ts, a_ts, r_ts)
     def __init__(self, obser_dim, st_dim, data, **kwargs):
@@ -208,10 +209,23 @@ class StateReprLearn(object):
            ).mean(axis=0)
         return temp_grad + prop_grad + cau_grad + rep_grad
         
+    def gradient_descent_step(self):
+        grad = self.gradient()
+        if np.linalg.norm(grad) < self.error:
+            return False
+        W_copy = self.W.copy()
+        loss_copy = self.loss_func()
+        if np.random.random() < self.p:
+            print('epsilon gets larger')
+            self.epsilon *= 1.2
+        self.W -= self.epsilon * grad
+        if self.loss_func() > loss_copy:
+            print('epsilon gets smaller')
+            self.W = W_copy
+            self.epsilon *= 0.7
+        return True
 
     def gradient_descent(self, maxiter=1000):
         for _ in range(maxiter):
-            grad = self.gradient()
-            if np.linalg.norm(grad) < self.error:
+            if not self.gradient_descent_step():
                 break
-            self.W -= self.epsilon * grad
