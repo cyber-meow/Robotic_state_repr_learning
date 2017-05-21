@@ -1,6 +1,8 @@
 
 import numpy as np
+
 from environment.nav_env_ego import NavEnvEgo
+from utility import div0
 
 
 class NavEnvExt(NavEnvEgo):
@@ -151,10 +153,10 @@ class NavEnvExt(NavEnvEgo):
         self._eyep = self.pos + 2 * np.array([np.sin(theta), np.cos(theta)])
         x,y = self._eyep
         
-        self._a1 = np.arctan((-x)/(45-y))
-        self._a2 = np.arctan((45-x)/(45-y))
-        self._b = -np.pi/2 + np.arctan((-y)/x)
-        self._c = np.pi/2 + np.arctan(y/(45-x))
+        self._a1 = np.arctan(div0(-x, 45-y))
+        self._a2 = np.arctan(div0(45-x, 45-y))
+        self._b = -np.pi/2 + np.arctan(div0(-y, x))
+        self._c = np.pi/2 + np.arctan(div0(y, 45-x))
 
     
     def observation(self):

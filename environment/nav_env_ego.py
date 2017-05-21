@@ -1,6 +1,8 @@
 
 import numpy as np
+
 from environment.nav_env import NavEnv
+from utility import div0
 
 
 # The egocentric view implementation
@@ -19,11 +21,9 @@ class NavEnvEgo(NavEnv):
     def observation(self):
 
         x, y = self.pos + np.array([0, 2])
-        if y == 45:
-            return np.tile(self.wall_colors["front"], (10, 10, 1)).reshape(-1)
 
-        a1 = np.arctan(x/(45-y))  # angle in front, left
-        a2 = np.arctan((45-x)/(45-y))  # angle in front, right
+        a1 = np.arctan(div0(x, 45-y))  # angle in front, left
+        a2 = np.arctan(div0(45-x, 45-y))  # angle in front, right
         b1 = np.pi/2 - a1
         b = np.arctan(y/x) + b1  # angle left
         c1 = np.pi/2 - a2
@@ -87,8 +87,8 @@ class NavEnvEgo(NavEnv):
     @classmethod
     def _set_column_color(cls, img, wall_dis, col, middle_color):
         
-        alpha = np.arctan(3/wall_dis)  # angle to the top
-        beta = np.arctan(1/wall_dis)  # angle to the bottom
+        alpha = np.arctan(div0(3, wall_dis))  # angle to the top
+        beta = np.arctan(div0(1, wall_dis))  # angle to the bottom
         
         # downside
         for i in range(7):

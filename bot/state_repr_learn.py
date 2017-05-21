@@ -28,12 +28,6 @@ def array_outer(arr1, arr2):
     """
     return np.einsum("...i,...j->...ij", arr1, arr2)
 
-def div0(a,b):
-    with np.errstate(divide='ignore', invalid='ignore'):
-        c = np.true_divide(a, b)
-        c = np.nan_to_num(c)
-    return c
-
 
 class StateReprLearn(object):
 
