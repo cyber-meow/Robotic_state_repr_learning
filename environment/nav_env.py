@@ -46,7 +46,7 @@ class NavEnv(Environment):
 
     # an image of the entire room, 10 * 10 pixel RGB image
     def observation(self):
-        img = np.tile(color, (10,10,1))
+        img = np.tile(self.ground_color, (10,10,1))
         x,y = self.pos
         xl, xr = int((x-2)/4.5), int((x+2-1e-3)//4.5)
         yl, yr = int((y-2)//4.5), int((y+2-1e-3)//4.5)

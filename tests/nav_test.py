@@ -16,6 +16,7 @@ bot = ExploreBot()
 inter = Interaction(nav_env, bot)
 
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
+ax1.axis('off'); ax2.axis('off')
 
 obs1 = nav_env.show_observation(super(NavEnvEgo, nav_env).observation())
 obs2 = nav_env.show_observation(inter._observation)
