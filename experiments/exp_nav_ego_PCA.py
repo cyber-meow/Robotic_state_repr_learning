@@ -32,17 +32,19 @@ def fit_pca():
     pca.states = pca.transform(bot_srl.states)
 
 def plot_eigen_values(n):
-    plt.bar(range(1,6), pca.explained_variance_)
-    plt.ylabel(Eigenvalues of state samples)
+    plt.bar(range(1,6), pca.explained_variance_, color='turquoise')
+    plt.margins(0.08, 0.1)
+    plt.ylim(ymin=0)
+    plt.ylabel("Eigenvalues of state samples")
     plt.savefig("figures/nav_ego_PCA_{}_evs".format(n))
     plt.show()
 
 # plot the result after n steps of gradient descent
-def plot_pc1(n):
+def plot_x(n):
     plot_states(
         np.array(inter.env_state_his), pca.states, 'x', 
         path="figures/nav_ego_PCA_{}_x".format(n), lab="Principal component")
-def plot_pc2(n):
+def plot_y(n):
     plot_states(
         np.array(inter.env_state_his), pca.states, 'y',
         path="figures/nav_ego_PCA_{}_y".format(n), lab="Principal component")
