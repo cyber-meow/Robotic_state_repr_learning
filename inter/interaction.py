@@ -58,7 +58,7 @@ class Interaction(object):
         for _ in range(iter_num):
             self.interact()
 
-    def observation_serie(self, print_reward=True, save=False, path=None):
+    def observation_serie(self, print_reward=True, path=None):
         fig, ax = plt.subplots()
         ax.axis('off')
         obs = self.env.show_observation(self._observation)
@@ -71,8 +71,7 @@ class Interaction(object):
             return im,
         ani = animation.FuncAnimation(
             fig, animate, 200, interval=120, blit=True)
-        if save:
-            assert path is not None
+        if path is not None:
             ani.save(path, writer='ffmpeg')
         plt.show()
         return ani
