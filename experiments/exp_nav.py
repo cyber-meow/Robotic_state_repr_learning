@@ -8,7 +8,7 @@ import numpy as np
 from inter.interaction import Interaction
 from environment.nav_env import NavEnv
 from bot.explore_bot import ExploreBot
-from bot.state_repr_learn import StateReprLearn, gradient
+from bot.state_repr_learn import StateReprLearn
 from plot_exp_nav import plot_states
 
 
