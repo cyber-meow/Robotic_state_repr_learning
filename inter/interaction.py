@@ -85,5 +85,5 @@ class Interaction(object):
                 self.interact_no_learn()
                 reward_sum += self._reward
             rewards.append(reward_sum)
-        return np.mean(rewards)
+        return np.mean(rewards), np.std(rewards)
         

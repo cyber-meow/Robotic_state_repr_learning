@@ -59,4 +59,3 @@ class NFQ(object):
         return self.actions[a_num]
 
 
-
