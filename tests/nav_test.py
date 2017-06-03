@@ -34,7 +34,7 @@ def animate(*args):
 
 def run():
     ani = animation.FuncAnimation(fig, animate, 1000, interval=100, blit=True)
-    #ani.save("nav_env.mp4", writer='ffmpeg')
+    ani.save("nav_env.mp4", writer='ffmpeg')
     plt.show()
     return ani
 
