@@ -91,6 +91,10 @@ class NavEnvExt(NavEnvEgo):
         actions = np.dstack(np.meshgrid(turn, mv)).reshape(-1,2)
         return [list(a) for a in actions]
 
+    @property
+    def state(self):
+        return np.append(self.pos, 
+            [np.cos(self.rad_orientation), np.sin(self.rad_orientation)])
 
     def act(self, action):
         
@@ -295,3 +299,15 @@ class NavEnvExt(NavEnvEgo):
             for j in range(resolution):
                 img[i,j] = self._ground_get_color(cords[i,j])
         return img
+
+
+class NavEnvExtSpe(NavEnvExt):
+    """
+    The observation of the robot is the internal state, 
+    used just for particular purposes (ex one curve in the ql experiment)
+    """
+    def observation(self):
+        return self.state
+
+    def show_observation(self, observation):
+        return self.top_down_view(50)
