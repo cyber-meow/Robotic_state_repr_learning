@@ -17,7 +17,7 @@ class NFQ(object):
         set_all_args(self, kwargs)
         
 
-    def fit(self, data, max_iter=300, intra_step=10):
+    def fit(self, data, max_iter=300, intra_step=50):
         """
         data is the triple (ss, as, rs)
         """

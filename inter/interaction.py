@@ -58,17 +58,24 @@ class Interaction(object):
         for _ in range(iter_num):
             self.interact()
 
-    def observation_serie(self):
+    def observation_serie(self, print_reward=True, save=False, path=None):
         fig, ax = plt.subplots()
         ax.axis('off')
         obs = self.env.show_observation(self._observation)
         im = plt.imshow(obs, interpolation='none', origin='lower')
         def animate(*args):
             self.interact_no_learn()
+            if print_reward:
+                print("reward: {}".format(self._reward))
             im.set_array(self.env.show_observation(self._observation))
             return im,
-        ani = animation.FuncAnimation(fig, animate, interval=50, blit=True)
+        ani = animation.FuncAnimation(
+            fig, animate, 200, interval=120, blit=True)
+        if save:
+            assert path is not None
+            ani.save(path, writer='ffmpeg')
         plt.show()
+        return ani
 
     def compute_avg_reward(self, num_episode, num_step):
         rewards = []

@@ -8,8 +8,8 @@ from utility import set_all_args
 class QLBot(Bot):
 
     cycle = 500
-    qlfit_max_iter = 300
-    qlfit_intra_step = 10
+    qlfit_max_iter = 200
+    qlfit_intra_step = 50
 
     def __init__(self, q_learning, **kwargs): 
         self.q_learning = q_learning
