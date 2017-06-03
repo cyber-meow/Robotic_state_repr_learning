@@ -17,6 +17,7 @@ inter_test = Interaction(nav_env, bot)
 avg_rewards = []
 
 def run_one_cycle():
+    inter.env.__init__()
     inter.interact_serie(500)
     avg_rewards.append(inter_test.compute_avg_reward(20, 50))
 
