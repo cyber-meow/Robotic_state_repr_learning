@@ -38,16 +38,16 @@ class QLBotTest(object):
         
 
 # the bot knows the internal states, this shall be the upper bound
-bot1 = QLBotTest(NavEnvExtSpe, QLBot)
+#bot1 = QLBotTest(NavEnvExtSpe, QLBot)
 
 # using learned states by the main algorithm
-bot2 = QLBotTest(NavEnvExt, QLBotSRL)
+#bot2 = QLBotTest(NavEnvExt, QLBotSRL)
 
 # using five first principal components
-bot3 = QLBotTest(NavEnvExt, QLBotPCA)
+#bot3 = QLBotTest(NavEnvExt, QLBotPCA)
 
 # using raw observations
-bot4 = QLBotTest(NavEnvExt, QLBot)
+#bot4 = QLBotTest(NavEnvExt, QLBot)
 
 
 class ShowAnimation(object):
@@ -64,7 +64,7 @@ class ShowAnimation(object):
         self.im2 = self.ax2.imshow(obs2, interpolation='none', origin='lower')
 
     def animate(self, *args):
-        self.inter.interact()
+        self.inter.interact_no_learn()
         self.im1.set_array(self.inter.env.top_down_view(50))
         self.im2.set_array(
             self.inter.env.show_observation(self.inter._observation))
