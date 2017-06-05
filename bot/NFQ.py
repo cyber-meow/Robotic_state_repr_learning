@@ -3,10 +3,11 @@ import numpy as np
 from sklearn.neural_network import MLPRegressor
 from sklearn.exceptions import NotFittedError
 
+from inter.interfaces import QLearning
 from utility import set_all_args 
 
 
-class NFQ(object):
+class NFQ(QLearning):
 
     gamma = 0.9
     beta = 0.8
