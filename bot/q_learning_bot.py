@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.decomposition import PCA
 from sklearn.externals import joblib
 
-from inter.interfaces import Bot
+from inter.interfaces import Bot, QLearning
 from bot.state_repr_learn import StateReprLearn
 from utility import set_all_args
 
@@ -16,6 +16,7 @@ class QLBot(Bot):
 
     def __init__(self, q_learning, st_dim, **kwargs): 
         """st_dim is not used here, just for signature consitency"""
+        assert isinstance(q_learning, QLearning)
         self.q_learning = q_learning
         self._data = [[], [], []]
         self._iter_num = 0

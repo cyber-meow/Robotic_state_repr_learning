@@ -53,3 +53,14 @@ class Bot(metaclass=ABCMeta):
         exp: triple of (observation, action, reward)
         """
         pass
+
+
+class QLearning(metaclass=ABCMeta):
+    
+    @abstractmethod
+    def fit(self, data):
+        pass
+    
+    @abstractmethod
+    def decision(self, state):
+        pass
