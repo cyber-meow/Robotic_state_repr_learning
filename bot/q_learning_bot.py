@@ -11,7 +11,7 @@ from utility import set_all_args
 class QLBot(Bot):
 
     cycle = 500
-    qlfit_max_iter = 200
+    qlfit_max_iter = 300
     qlfit_intra_step = 50
 
     def __init__(self, q_learning, st_dim, **kwargs): 
@@ -98,7 +98,7 @@ class QLBotSRL(QLBot):
             print("srl gradient descent finished, now Q-learning")
             self.q_learning.fit(
                 [self.srl.states, self.data[1], self.data[2]],
-                self.qlfit_max_iter, self.qlfit_intra_step)
+                 self.qlfit_max_iter, self.qlfit_intra_step)
 
     def save(self, pathname):
         joblib.dump(self.q_learning.mlp, "{}_NFQ_MLP.pkl".format(pathname))
