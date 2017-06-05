@@ -70,9 +70,9 @@ class ShowAnimation(object):
             self.inter.env.show_observation(self.inter._observation))
         return self.im1, self.im2
 
-    def run(self, name=None):
+    def run(self, name=None, length=500):
         ani = animation.FuncAnimation(
-            self.fig, self.animate, 100, interval=100, blit=True)
+            self.fig, self.animate, length, interval=100, blit=True)
         if name is not None:
             ani.save(name, writer='ffmpeg')
         plt.show()
