@@ -3,6 +3,7 @@ import sys
 import os
 sys.path.insert(0, os.path.abspath('..'))
 
+import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
@@ -77,3 +78,26 @@ class ShowAnimation(object):
             ani.save(name, writer='ffmpeg')
         plt.show()
         return ani
+
+
+def plot_with_std(d1, d2, d3, d4, n, num_steps):
+    
+    labels = ['RL on robot pose', 'RL on learned states',
+              'RL on principal components', 'RL on observations']
+    line_colors = ['black', 'forestgreen', 'darkviolet', 'peru']
+    suface_colors = ['grey', 'lightgreen', 'slateblue', 'sandybrown']
+    
+    x_axis = np.linspace(0, num_steps, n)
+    
+    for i, d in enumerate([d1, d2, d3, d4]):
+        avg, std = np.array(d[0][:n]), np.array(d[1][:n])
+        plt.plot(x_axis, avg, color=line_colors[i])
+        plt.fill_between(x_axis, avg-std, avg+std, label=labels[i],
+                         facecolor=suface_colors[i], alpha=0.3)
+    plt.xlabel("Number of training steps")
+    plt.ylabel("Reward per 50 step episode")
+    lgd = plt.legend(loc=9, bbox_to_anchor=(0.46, 1.17), ncol=2)
+    plt.savefig("q_learning_curves_mine", 
+                bbox_extra_artist=(lgd,), bbox_inches='tight')
+    plt.show()
+
